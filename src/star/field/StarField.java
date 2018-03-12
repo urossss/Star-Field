@@ -1,11 +1,17 @@
 package star.field;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -18,16 +24,28 @@ public class StarField extends JPanel implements MouseMotionListener, KeyListene
 
     private Star[] stars = new Star[200];
     private int mouseX = 0;
+    private boolean started = false;
 
     public StarField(int width, int height) {
         this.setBackground(Color.BLACK);
+
         this.addMouseMotionListener(this);
         this.addKeyListener(this);
-        this.setFocusable(true);
-        //this.requestFocus();
+        this.setFocusable(true);    // da bi radio KeyListener
 
         createStars(width, height);
 
+        Thread t = new Thread() {
+            public void run() {
+                try {
+                    sleep(100); //improvizovano, delic sekunde, samo da krene aplikacija, a posle toga mouse move moze ugasiti program
+                } catch (InterruptedException ex) {
+                    //
+                }
+                started = true; // sad moze da se ugasi mrdanjem misa
+            }
+        };
+        t.start();
     }
 
     public void createStars(int w, int h) {
@@ -58,7 +76,10 @@ public class StarField extends JPanel implements MouseMotionListener, KeyListene
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        mouseX = e.getX();
+        //mouseX = e.getX();  // za promenu brzine
+        if (started) {
+            System.exit(0); // za screensaver
+        }
     }
 
     @Override
@@ -90,6 +111,14 @@ public class StarField extends JPanel implements MouseMotionListener, KeyListene
                 frame.getContentPane().add(new StarField(800, 800));
                 frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 frame.setUndecorated(true);
+
+                // Transparent 16 x 16 pixel cursor image.
+                BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+                // Create a new blank cursor.
+                Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+                // Set the blank cursor to the JFrame.
+                frame.getContentPane().setCursor(blankCursor);
+
                 frame.setVisible(true);
             }
         });

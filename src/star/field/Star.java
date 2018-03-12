@@ -20,12 +20,12 @@ public class Star {
     private double z;
     private double pz;  //prethodno z, za iscrtavanje linija
     
-    private double speed = 1;
+    private double speed = 1;   // ovo je pocetna vrednost, moze se menjati, ako se dole otkomentarise sta treba
 
     private int width;
     private int height;
     
-    public static int mousePos;
+    public static int mousePos; // stavljeno je public da ne bi moralo za svaku zvezdu pojedinano da se podesava
 
     public Star(int w, int h) {
         this.width = w;
@@ -56,12 +56,15 @@ public class Star {
         int r = (int) map(z, 0, width, 10, 0);
         g.fillOval((int) sx, (int) sy, r, r);
         
-        double px = map(x / pz, 0, 1, 0, width);
-        double py = map(y / pz, 0, 1, 0, height);
-        
-        //g.drawLine((int) px, (int) py, (int) sx, (int) sy);   //warp
-        
-        pz =z;
+        /*
+         * Ako hocemo simulaciju warpa, ovo ovde otkomentarisati, a red iznad iskomentarisati
+         *  double px = map(x / pz, 0, 1, 0, width);
+         *  double py = map(y / pz, 0, 1, 0, height);
+         *
+         *  g.drawLine((int) px, (int) py, (int) sx, (int) sy);   //warp
+         *
+         *  pz =z;
+        */
 
         update();
     }
