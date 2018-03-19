@@ -10,6 +10,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -25,6 +27,8 @@ public class StarField extends JPanel implements MouseMotionListener, KeyListene
     private Star[] stars = new Star[200];
     private int mouseX = 0;
     private boolean started = false;
+    
+    private Timer timer;
 
     public StarField(int width, int height) {
         this.setBackground(Color.BLACK);
@@ -46,6 +50,17 @@ public class StarField extends JPanel implements MouseMotionListener, KeyListene
             }
         };
         t.start();
+        
+        timer = new Timer();
+        timer.schedule(new TickTimerTask(), 0, 10);
+    }
+    
+     private class TickTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            repaint();
+        }
     }
 
     public void createStars(int w, int h) {
@@ -65,8 +80,6 @@ public class StarField extends JPanel implements MouseMotionListener, KeyListene
         for (int i = 0; i < stars.length; i++) {
             stars[i].show(g);
         }
-
-        repaint();
     }
 
     @Override
