@@ -12,8 +12,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -27,7 +25,7 @@ public class StarField extends JPanel implements MouseMotionListener, KeyListene
     private Star[] stars = new Star[200];
     private int mouseX = 0;
     private boolean started = false;
-    
+
     private Timer timer;
 
     public StarField(int width, int height) {
@@ -40,23 +38,22 @@ public class StarField extends JPanel implements MouseMotionListener, KeyListene
         createStars(width, height);
 
         Thread t = new Thread() {
+            @Override
             public void run() {
                 try {
                     sleep(100); //improvizovano, delic sekunde, samo da krene aplikacija, a posle toga mouse move moze ugasiti program
                 } catch (InterruptedException ex) {
-                    //
                 }
                 started = true; // sad moze da se ugasi mrdanjem misa
             }
         };
         t.start();
-        
+
         timer = new Timer();
         timer.schedule(new TickTimerTask(), 0, 10);
     }
-    
-     private class TickTimerTask extends TimerTask {
 
+    private class TickTimerTask extends TimerTask {
         @Override
         public void run() {
             repaint();
@@ -77,8 +74,8 @@ public class StarField extends JPanel implements MouseMotionListener, KeyListene
 
         Star.mousePos = mouseX;
 
-        for (int i = 0; i < stars.length; i++) {
-            stars[i].show(g);
+        for (Star star : stars) {
+            star.show(g);
         }
     }
 
