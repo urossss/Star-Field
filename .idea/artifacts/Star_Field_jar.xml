@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Star Field:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Star_Field_jar</output-path>
+    <root id="archive" name="Star Field.jar">
+      <element id="module-output" name="Star Field" />
+    </root>
+  </artifact>
+</component>
